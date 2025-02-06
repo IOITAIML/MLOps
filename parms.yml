@@ -6,8 +6,8 @@ base:
 data_sources:
   raw_data_csv: data/raw/insurance.csv
 
-load data:
-  clean_data: data/processed/insurance_1.csv
+load_data:
+  clean_data: data/processed/insurence_1.csv
 
 split_data:
   train_path: data/processed/train.csv
