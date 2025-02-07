@@ -6,6 +6,8 @@ import argparse
 from pkgutil import get_data
 from getData import get_data,read_param
 from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
+from sklearn.linear_model import ElasticNet
+from sklearn.model_selection import train_test_split
 import joblib
 import json
 import mlflow
@@ -27,3 +29,18 @@ def train_and_evaluate(config_path):
     target = config["base"]["target_col"]
     train = pd.read_csv("train_data_path")
     test = pd.read_csv("test_data_path")
+
+    train_y = train[target]
+    test_y = test[target]
+
+    train_x = train.drop(target,axis=1)
+    test_x = test.drop(target,axis=1)
+
+    #Model Creation - 
+    lr = ElasticNet(alpha=alpha,l1_ratio=l1_ratio,random_state=random_state)
+    lr.fit(train_x,train_y)
+
+    predict = lr.predict(test_x)
+
+    (rmse, mse, r2) = eval_metrics(test_y,predict)
+    print("ElasticNet Model (alpha=%f,l1_score=%f)" % (alpha,l1_ratio))
