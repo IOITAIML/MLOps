@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/341844573680170032/76f4b2b835e44c4fad2e0be584ecd53e/artifacts
+end_time: 1738908638460
+entry_point_name: ''
+experiment_id: '341844573680170032'
+lifecycle_stage: active
+run_id: 76f4b2b835e44c4fad2e0be584ecd53e
+run_name: mlops
+run_uuid: 76f4b2b835e44c4fad2e0be584ecd53e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1738908623714
+status: 4
+tags: []
+user_id: Vaishnav T Kokate

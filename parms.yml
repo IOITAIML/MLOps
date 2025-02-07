@@ -18,10 +18,17 @@ estimators:
   ElasticNet:
     params:
       alpha: 0.9
-      l1_ratio: 0.5
+      l1_ratio: 0.2
 
 model_path: models/models.joblib
 
-reports: 
-  params: reports/pramas.json
-  score: reports/scores.json
+# reports: 
+#   params: reports/pramas.json
+#   score: reports/scores.json
+
+mlflow_config:
+  artifacts: Artifacts
+  experiment_name: insurence_aissms
+  run_name: mlops
+  registered_model_name: ElasticNet
+  remote_server_url: http://127.0.0.1:5000
