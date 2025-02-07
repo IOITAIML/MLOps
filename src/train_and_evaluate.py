@@ -10,8 +10,14 @@ from sklearn.linear_model import ElasticNet
 from sklearn.model_selection import train_test_split
 import joblib
 import json
-import mlflow
 from urllib.parse import urlparse
+
+
+def eval_metrics(actual,predicted):
+    rmse = np.sqrt(mean_absolute_error(actual,predicted))
+    mae = mean_absolute_error(actual,predicted)
+    r2=r2_score(actual,predicted)
+    return rmse,mae,r2
 
 def train_and_evaluate(config_path):
     config = read_param(config_path)
@@ -27,8 +33,8 @@ def train_and_evaluate(config_path):
     l1_ratio = config["estimators"]["ElasticNet"]["params"]["l1_ratio"]
 
     target = config["base"]["target_col"]
-    train = pd.read_csv("train_data_path")
-    test = pd.read_csv("test_data_path")
+    train = pd.read_csv(train_data_path)
+    test = pd.read_csv(test_data_path)
 
     train_y = train[target]
     test_y = test[target]
@@ -42,5 +48,32 @@ def train_and_evaluate(config_path):
 
     predict = lr.predict(test_x)
 
-    (rmse, mse, r2) = eval_metrics(test_y,predict)
-    print("ElasticNet Model (alpha=%f,l1_score=%f)" % (alpha,l1_ratio))
+    (rmse, mae, r2) = eval_metrics(test_y,predict)
+    print("ElasticNet Model (alpha=%f,l1_score=%f):" % (alpha,l1_ratio))
+
+    score_files = config["reports"]["score"]
+    params_file = config["reports"]["params"]
+
+    with open(score_files,"w") as f:
+        scores={
+            "rmse":rmse,
+            "mse":mae,
+            "r2":r2
+        }
+        json.dump(scores,f)
+    
+    with open(params_file,"w") as f:
+        params={
+            "alpha":alpha,
+            "l1_ratio":l1_ratio,
+        }
+        json.dump(params,f)
+
+    model_path = config["model_path"]
+    joblib.dump(lr,model_path)
+
+if __name__ == "__main__":
+    args = argparse.ArgumentParser()
+    args.add_argument("--config",default="parms.yml")
+    parsed_args=args.parse_args()
+    train_and_evaluate(config_path=parsed_args.config)
