@@ -25,9 +25,9 @@ jobs:
 
             - name: Docker Build and Push
               run: |
-                  docker-compose -f docker-compose.yaml build
-                  docker tag webapp:latest tanzeemrugrel/webapp:latest
+                  docker-compose -f docker-compose.yml build
+                  docker tag webapp:latest vaishnavk1114/webapp:latest
                   docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-                  docker push tanzeemrugrel/webapp:latest
+                  docker push vaishnavk1114/webapp:latest
               env:
                 DOCKER_CLI_EXPERIMENTAL: 1  # Optional: Enable experimental Docker features
